@@ -34,9 +34,9 @@ int main(int argc, char **argv){
  
   ros::Publisher twist_pub = n.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
   ros::Subscriber command_Sub = n.subscribe("dns_command", 1000, VelocityCommandCallBack);
+  ros::Subscriber currentHeading_Sub = n.subscribe("currentHeading", 1000, CurrentHeadingCallback);
   
-  
-  ros::Rate loop_rate(50);
+  ros::Rate loop_rate(15);
 
   while (ros::ok()){
 
@@ -47,12 +47,10 @@ int main(int argc, char **argv){
       continue;
     }
 
-    //Vector2d * commandVector = AddVectors(patternFormationVector, obstacleAvoidanceVector);
+    //printf("currentHeading = %f\n", currentHeading);
+    //printf("targetHeading = %f\n", targetHeading);
+    //printf("targetLinearVel = %f\n", targetLinearVel);
 
-     
-    // Change to degrees
-    targetHeading = targetHeading * 180. / M_PI;
-    
     geometry_msgs::Twist msg;
 
     float headingError = currentHeading - targetHeading;
@@ -68,6 +66,9 @@ int main(int argc, char **argv){
     
     // Now convert to radians (per second)
     headingError = headingError * M_PI/180.;
+
+    // Minimum threshold on linear speed to stop drift
+    if(fabs(targetLinearVel) < 0.2) targetLinearVel = 0.;
     
     // set values of twist msg.
     msg.linear.x = 0.075*targetLinearVel;

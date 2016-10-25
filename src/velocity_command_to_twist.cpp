@@ -68,7 +68,7 @@ int main(int argc, char **argv){
     headingError = headingError * M_PI/180.;
 
     // Minimum threshold on linear speed to stop drift
-    if(fabs(targetLinearVel) < 0.1) targetLinearVel = 0.;
+    //if(fabs(targetLinearVel) < 0.1) targetLinearVel = 0.;
     
     // set values of twist msg.
     msg.linear.x = 0.075*targetLinearVel;

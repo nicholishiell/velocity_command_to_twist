@@ -73,8 +73,9 @@ int main(int argc, char **argv){
     // set values of twist msg.
     msg.linear.x = 0.075*targetLinearVel;
     msg.angular.z = 2.*headingError;
-    msg.angular.y = -1.;
-
+    // msg.angular.y = -1.;
+    msg.angular.y = 1.;
+    
     // Need to remove excess digits for transmission over serial.
     msg.linear.x = roundf(msg.linear.x * 100.) / 100.;
     msg.angular.z = roundf(msg.angular.z * 100.) / 100.; 
